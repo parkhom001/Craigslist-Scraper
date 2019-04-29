@@ -28,3 +28,7 @@ class clSpyder(scrapy.Spider):
         absolute_next_url = response.urljoin(relative_next_url)
 
         yield Request(absolute_next_url, callback=self.parse)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9163cf25ab8cb4fe67695f5015775bbdfc3a15c0
