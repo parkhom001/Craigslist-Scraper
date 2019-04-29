@@ -14,17 +14,10 @@ class clSpyder(scrapy.Spider):
     start_urls = ['https://losangeles.craigslist.org/d/real-estate/search/rea'] # pull data from this website
     
     def parse(self, response):
-        listings = response.xpath('//p[@class="result-info"]')
-        for listing in listings:
-            title = listing.xpath('a/text()').extract_first()
-            price = listing.xpath('span/span[@class="result-price"]/text()').extract_first()
-            location = listing.xpath('span/span[@class="result-hood"]/text()').extract_first()
-            yield {'Title': title,
-                   'Price': price,
-                   'Location': location
-                   }
-
+        titles = response.xpath('//a[@class="result-title hdrlnk"]/text()').extract()
+        for title in titles:
+            yield {'Title': title}
         relative_next_url = response.xpath('//a[@class="button next"]/@href').extract_first()
         absolute_next_url = response.urljoin(relative_next_url)
-
-        yield Request(absolute_next_url, callback=self.parse)
+        
+        yield Request(absolute_next_url, callback=self.spyderparse)
