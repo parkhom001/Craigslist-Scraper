@@ -23,7 +23,8 @@ class clSpyder(scrapy.Spider):
         
         description = "".join(line for line in response.xpath('//*[@id="postingbody"]/text()').extract())
         geoposition = response.xpath('//head/meta[@name="geo.position"]/@content').get()
-        yield{'URL': url, 'Title': title, 'Description':description, 'Price':price, 'Location':location,'Date':date, 'Description':description,'Geoposition':geoposition}
+        lat, long = geoposition.split(';',2)
+        yield{'URL': url, 'Title': title, 'Description':description, 'Price':price, 'Location':location,'Date':date, 'Description':description,'Geoposition':geoposition, 'Latitude':lat, 'Longitude':long}
 
     def parse(self, response):
         listings = response.xpath('//p[@class="result-info"]')
